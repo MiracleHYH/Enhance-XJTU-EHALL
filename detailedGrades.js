@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         XJTU ehall 成绩查询增强
 // @namespace    https://github.com/MiracleHYH/Enhance-XJTU-EHALL
-// @version      0.1
+// @version      0.2
 // @description  增加显示成绩详情以及排名信息
 // @author       Miracle
 // @match        http://ehall.xjtu.edu.cn/new/thirdAppIndexShell.html
@@ -31,7 +31,7 @@ function query_pm(info, data) {
 function query() {
     let courseId = $("#queryInfo_courseId").val();
     //console.log(grades[courseId])
-    if (courseId.length == 0 || typeof(grades[courseId]) == 'undefine') {
+    if (courseId.length == 0 || typeof(grades[courseId]) == 'undefined') {
         alert("课程号错误");
         return;
     }
