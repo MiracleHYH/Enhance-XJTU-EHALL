@@ -14,6 +14,19 @@
 
 var $, grades = {};
 
+function query_pm(info, data) {
+    let httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', 'http://ehall.xjtu.edu.cn/jwapp/sys/cjcx/modules/cjcx/jxbxspmcx.do', true);
+    httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    httpRequest.send(data);
+    httpRequest.onreadystatechange = function () {
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+            let res = JSON.parse(httpRequest.responseText).datas.jxbxspmcx.rows[0];
+            info += `排名：${res.PM}/${res.ZRS}`;
+            alert(info);
+        }
+    };
+}
 
 function query() {
     let courseId = $("#queryInfo_courseId").val();
@@ -37,8 +50,8 @@ function query() {
         let qtcj = grades[courseId][`QTCJ${i}_DISPLAY`].length>0 ? grades[courseId][`QTCJ${i}_DISPLAY`] : grades[courseId][`QTCJ${i}`];
         if (qtcj != null) info += `其他成绩${i}：${qtcj}\n`;
     }
-    info += `总成绩：${grades[courseId].ZCJ}`
-    alert(info);
+    info += `总成绩：${grades[courseId].ZCJ}\n`;
+    query_pm(info, `JXBID=${grades[courseId].JXBID}&XNXQDM=${grades[courseId].XNXQDM}`);
 }
 
 function addQuery() {
@@ -54,7 +67,7 @@ function addQuery() {
 function redirectToReal() {
     let url = document.getElementById("thirdpartyFrame").src;
     if (typeof(url) == 'undefined') {
-        setTimeout(function(){redirectToReal()}, 50);
+        setTimeout(function(){redirectToReal()}, 500);
         return;
     }
     location.replace(url);
@@ -62,7 +75,7 @@ function redirectToReal() {
 
 function main() {
     if ($("div.bh-headerBar-title").length == 0) {
-        setTimeout(function(){main()}, 50);
+        setTimeout(function(){main()}, 500);
         return;
     }
     $("div.bh-headerBar-title").text("成绩查询 增强版");
